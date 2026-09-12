@@ -1,19 +1,19 @@
 {
   "faithfulness": {
-    "mean_audc_method": 0.021017598095002227,
-    "mean_audc_random": 0.034888117191238355,
+    "mean_audc_method": 0.02043698874105671,
+    "mean_audc_random": 0.04783674496947282,
     "is_faithful": true
   },
   "uncertainty_tiers_attribution": {
     "confident_correct": {
-      "count": 41,
-      "mean_joint_entropy": 2.263190746307373,
-      "std_joint_entropy": 0.7094975113868713
+      "count": 45,
+      "mean_joint_entropy": 2.503419876098633,
+      "std_joint_entropy": 0.23040086030960083
     },
     "uncertain": {
-      "count": 12,
-      "mean_joint_entropy": 2.7026731967926025,
-      "std_joint_entropy": 0.2862623631954193
+      "count": 32,
+      "mean_joint_entropy": 2.6066441535949707,
+      "std_joint_entropy": 0.2543204426765442
     },
     "diffuse_attribution_in_uncertain": true
   }

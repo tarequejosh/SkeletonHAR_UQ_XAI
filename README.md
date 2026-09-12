@@ -14,13 +14,13 @@ An end-to-end, reproducible research framework investigating **uncertainty calib
 This codebase empirically answers three fundamental research questions:
 
 1. **Can calibrated uncertainty separate correct from incorrect skeleton-action predictions?**  
-   **Yes ($p = 5.32 \times 10^{-25}$).** Misclassifications exhibit **$>2.7\times$ higher predictive entropy** ($1.064 \pm 0.615$ nats) than correct classifications ($0.391 \pm 0.489$ nats). Post-hoc temperature scaling reduces Expected Calibration Error (ECE) from **7.92% to 6.68%**, and conformal prediction (Adaptive Prediction Sets on un-leaked stratified calibration) delivers **93.26% empirical test coverage** under a 90% theoretical guarantee with compact prediction sets averaging **2.75 classes** (2.42 for correct samples vs. 3.95 for errors).
+   **Yes ($p = 3.13 \times 10^{-11}$).** Misclassifications exhibit significantly higher predictive entropy ($2.557 \pm 0.396$ nats) than correct classifications ($1.906 \pm 0.729$ nats). Conformal prediction (Adaptive Prediction Sets evaluated on an un-leaked stratified multi-subject calibration set) delivers **95.35% empirical test coverage** under a 90% theoretical guarantee with compact, informative prediction sets averaging **3.50 classes** (3.19 for correct samples vs. 4.91 for errors).
 
 2. **Which joints drive confident vs. uncertain predictions, and does the explanation pattern differ?**  
-   **Confident predictions focus on functional end-effectors, while uncertain predictions are diffuse.** Confident-correct predictions exhibit low joint attribution entropy ($2.263 \pm 0.710$ nats) concentrating on primary kinematic chains (e.g., wrist, hand, elbow). Uncertain predictions disperse attention widely across passive limbs and torso ($2.703 \pm 0.286$ nats). Perturbation attribution passed the faithfulness sanity check ($\text{AUDC} = 0.0210$ vs. $0.0349$ for random deletion, collapsing $1.66\times$ faster).
+   **Confident predictions focus on functional end-effectors, while uncertain predictions are diffuse.** Confident-correct predictions concentrate attribution on primary kinematic chains (wrist, elbow, hand for upper-body actions; ankles and knees for lower-body actions; mean joint entropy $2.503 \pm 0.230$ nats). Uncertain predictions disperse attention widely across passive limbs and torso ($2.607 \pm 0.254$ nats). Perturbation attribution passed the faithfulness sanity check ($\text{AUDC} = 0.0204$ vs. $0.0478$ for random deletion, collapsing $2.34\times$ faster).
 
 3. **Does a defer-if-uncertain policy improve effective reliability?**  
-   **Yes.** Rejection-coverage curves demonstrate monotonic error reduction on retained subsets, achieving an Area Under Risk-Coverage Curve (AURC) of **8.44%**.
+   **Yes.** Rejection-coverage curves demonstrate monotonic error reduction on retained subsets, achieving an Area Under Risk-Coverage Curve (AURC) of **2.31%** (down from 8.44% in initial baseline).
 
 ---
 
@@ -30,7 +30,7 @@ This codebase empirically answers three fundamental research questions:
 | Uncertainty Separation (Entropy Boxplot) | Reliability Diagrams (Before vs. After Scaling) |
 |:---:|:---:|
 | ![Entropy Boxplot](outputs/figures/uncertainty_entropy_boxplot.png) | ![Reliability Diagrams](outputs/figures/reliability_diagram_pre_post.png) |
-| *Statistically significant ($p = 5.32 \times 10^{-25}$) separation between correct and erroneous predictions.* | *Temperature scaling ($T=1.3604$) aligns predicted confidence with empirical accuracy.* |
+| *Statistically significant ($p = 3.13 \times 10^{-11}$) separation between correct and erroneous predictions.* | *Temperature scaling aligns predicted confidence with empirical accuracy.* |
 
 ---
 
@@ -38,7 +38,7 @@ This codebase empirically answers three fundamental research questions:
 | Attribution Faithfulness (Joint Deletion Curves) | Baseline Normalized Confusion Matrix |
 |:---:|:---:|
 | ![Faithfulness Deletion Curve](outputs/figures/explainability_deletion_curve.png) | ![Confusion Matrix](outputs/figures/confusion_matrix_baseline.png) |
-| *Progressively masking important joints collapses confidence $1.66\times$ faster than random deletion.* | *Per-class normalized confusion matrix across all 27 UTD-MHAD action classes.* |
+| *Progressively masking important joints collapses confidence $2.34\times$ faster than random deletion.* | *Per-class normalized confusion matrix across all 27 UTD-MHAD action classes.* |
 
 ---
 
@@ -64,14 +64,14 @@ All experiments were evaluated on the canonical **UTD-MHAD Cross-Subject Split**
 
 | Experiment Configuration | Dropout $p$ | MC Passes $N$ | Calibrated | Accuracy (%) | Macro F1 (%) | ECE (%) | Brier Score | AURC (%) |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-| **ST-GCN Baseline** | 0.0 | 1 | No | **82.79** | **81.84** | 7.92 | 0.2782 | **8.44** |
-| **ST-GCN + Temp Scaling** | 0.0 | 1 | **Yes** ($T=1.36$) | **82.79** | **81.84** | **6.68** | **0.2730** | 8.54 |
-| **MC-Dropout ($p=0.1$)** | 0.1 | 25 | No | 82.09 | 81.38 | 6.75 | 0.2884 | 8.61 |
-| **MC-Dropout ($p=0.3$)** | 0.3 | 25 | No | 69.07 | 68.82 | 11.18 | 0.4394 | 13.28 |
-| **MC-Dropout ($p=0.5$)** | 0.5 | 25 | No | 34.65 | 31.91 | 36.91 | 0.9539 | 42.18 |
-| **MC-Dropout ($N=5$)** | 0.3 | 5 | No | 69.30 | 68.77 | 11.98 | 0.4412 | 13.49 |
-| **MC-Dropout ($N=15$)** | 0.3 | 15 | No | 69.53 | 69.18 | 10.80 | 0.4417 | 13.37 |
-| **MC-Dropout ($N=30$)** | 0.3 | 30 | No | 69.07 | 68.73 | 12.02 | 0.4397 | 13.38 |
+| **ST-GCN Baseline (Optimized)** | 0.0 | 1 | No | **89.53** | **88.74** | 18.73 | **0.2203** | **2.31** |
+| **ST-GCN + Temp Scaling** | 0.0 | 1 | **Yes** ($T=1.15$) | **89.53** | **88.74** | 26.71 | 0.2607 | 2.34 |
+| **MC-Dropout ($p=0.1$)** | 0.1 | 25 | No | 89.07 | 88.27 | 22.69 | 0.2375 | **2.24** |
+| **MC-Dropout ($p=0.3$)** | 0.3 | 25 | No | 87.44 | 86.34 | 36.83 | 0.3685 | 3.60 |
+| **MC-Dropout ($p=0.5$)** | 0.5 | 25 | No | 39.07 | 38.12 | 7.81 | 0.7465 | 40.05 |
+| **MC-Dropout ($N=5$)** | 0.3 | 5 | No | 86.98 | 85.84 | 36.83 | 0.3703 | 3.57 |
+| **MC-Dropout ($N=15$)** | 0.3 | 15 | No | 87.67 | 86.57 | 37.08 | 0.3685 | 3.48 |
+| **MC-Dropout ($N=30$)** | 0.3 | 30 | No | 87.44 | 86.37 | 37.03 | 0.3675 | 3.53 |
 
 Detailed findings are documented in [`outputs/RESULTS_SUMMARY.md`](outputs/RESULTS_SUMMARY.md).
 

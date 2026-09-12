@@ -100,12 +100,22 @@ def main(config_path="configs/utd_baseline.yaml"):
         channel_plan=config["model"]["channel_plan"]
     ).to(device)
     
-    criterion = nn.CrossEntropyLoss()
-    optimizer = optim.Adam(
-        model.parameters(),
-        lr=config["training"]["learning_rate"],
-        weight_decay=config["training"]["weight_decay"]
-    )
+    label_smooth = config["training"].get("label_smoothing", 0.0)
+    criterion = nn.CrossEntropyLoss(label_smoothing=label_smooth)
+    
+    opt_type = config["training"].get("optimizer", "adam").lower()
+    if opt_type == "adamw":
+        optimizer = optim.AdamW(
+            model.parameters(),
+            lr=config["training"]["learning_rate"],
+            weight_decay=config["training"]["weight_decay"]
+        )
+    else:
+        optimizer = optim.Adam(
+            model.parameters(),
+            lr=config["training"]["learning_rate"],
+            weight_decay=config["training"]["weight_decay"]
+        )
     
     epochs = config["training"]["epochs"]
     scheduler = CosineAnnealingLR(

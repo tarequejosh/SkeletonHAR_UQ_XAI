@@ -11,14 +11,15 @@ model:
   in_channels: 3
   num_classes: 27
   num_nodes: 20
-  dropout: 0.0
+  dropout: 0.1
   channel_plan: "compact"
 
 training:
-  epochs: 60
-  optimizer: "adam"
+  epochs: 70
+  optimizer: "adamw"
   learning_rate: 0.001
-  weight_decay: 0.0005
+  weight_decay: 0.005
+  label_smoothing: 0.1
   lr_scheduler: "cosine"
   min_lr: 1.0e-5
   seed: 42

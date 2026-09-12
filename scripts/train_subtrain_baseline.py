@@ -95,13 +95,24 @@ def train_subtrain(config_path="configs/utd_baseline.yaml", epochs=60):
         channel_plan=config["model"]["channel_plan"]
     ).to(device)
     
-    criterion = nn.CrossEntropyLoss()
-    optimizer = optim.Adam(
-        model.parameters(),
-        lr=config["training"]["learning_rate"],
-        weight_decay=config["training"]["weight_decay"]
-    )
+    epochs = config["training"].get("epochs", epochs)
+    label_smooth = config["training"].get("label_smoothing", 0.0)
+    criterion = nn.CrossEntropyLoss(label_smoothing=label_smooth)
     
+    opt_type = config["training"].get("optimizer", "adam").lower()
+    if opt_type == "adamw":
+        optimizer = optim.AdamW(
+            model.parameters(),
+            lr=config["training"]["learning_rate"],
+            weight_decay=config["training"]["weight_decay"]
+        )
+    else:
+        optimizer = optim.Adam(
+            model.parameters(),
+            lr=config["training"]["learning_rate"],
+            weight_decay=config["training"]["weight_decay"]
+        )
+        
     scheduler = CosineAnnealingLR(optimizer, T_max=epochs, eta_min=config["training"]["min_lr"])
     
     checkpoint_dir = config["training"]["checkpoint_dir"]

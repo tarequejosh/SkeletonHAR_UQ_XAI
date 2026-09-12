@@ -1,0 +1,20 @@
+{
+  "faithfulness": {
+    "mean_audc_method": 0.021017598095002227,
+    "mean_audc_random": 0.034888117191238355,
+    "is_faithful": true
+  },
+  "uncertainty_tiers_attribution": {
+    "confident_correct": {
+      "count": 41,
+      "mean_joint_entropy": 2.263190746307373,
+      "std_joint_entropy": 0.7094975113868713
+    },
+    "uncertain": {
+      "count": 12,
+      "mean_joint_entropy": 2.7026731967926025,
+      "std_joint_entropy": 0.2862623631954193
+    },
+    "diffuse_attribution_in_uncertain": true
+  }
+}

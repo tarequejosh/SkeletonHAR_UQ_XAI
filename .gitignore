@@ -1,0 +1,29 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Data directories (raw archives and processed npz/mat files)
+data/utd_mhad/raw/
+data/utd_mhad/processed/*.npz
+data/ntu60/*
+!data/ntu60/.gitkeep
+!data/utd_mhad/processed/metadata.json
+
+# Model checkpoints (large binaries)
+outputs/checkpoints/*.pt
+
+# OS / Editor artifacts
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/

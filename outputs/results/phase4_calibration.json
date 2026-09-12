@@ -1,0 +1,18 @@
+{
+  "temperature_scaling": {
+    "optimal_temperature": 1.3603754043579102,
+    "cal_nll_before": 0.00030464844894595444,
+    "cal_nll_after": 0.0032296557910740376,
+    "test_ece_before": 0.0791902276665665,
+    "test_ece_after": 0.06681268956772113,
+    "test_mce_before": 0.35465750098228455,
+    "test_mce_after": 0.2984611392021179
+  },
+  "conformal_prediction": {
+    "target_coverage": 0.9,
+    "empirical_coverage": 0.9906976744186047,
+    "avg_set_size": 12.390697674418604,
+    "singleton_proportion": 0.04186046511627907,
+    "conformal_quantile_q_hat": 0.9997428059577942
+  }
+}

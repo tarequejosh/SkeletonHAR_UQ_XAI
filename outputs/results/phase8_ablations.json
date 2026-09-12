@@ -1,0 +1,90 @@
+[
+  {
+    "configuration": "Deterministic (Uncalibrated)",
+    "dropout_p": 0.0,
+    "mc_passes": 1,
+    "temp_scaled": false,
+    "accuracy": 0.827906976744186,
+    "macro_f1": 0.8183733040655232,
+    "ece": 0.0791902276665665,
+    "brier": 0.27818568452627135,
+    "aurc": 0.08442359796428207
+  },
+  {
+    "configuration": "Deterministic + Temp Scaling (T=1.36)",
+    "dropout_p": 0.0,
+    "mc_passes": 1,
+    "temp_scaled": true,
+    "accuracy": 0.827906976744186,
+    "macro_f1": 0.8183733040655232,
+    "ece": 0.06681268956772113,
+    "brier": 0.27297247733422014,
+    "aurc": 0.08540435304447905
+  },
+  {
+    "configuration": "MC-Dropout (p=0.1, N=25)",
+    "dropout_p": 0.1,
+    "mc_passes": 25,
+    "temp_scaled": false,
+    "accuracy": 0.8209302325581396,
+    "macro_f1": 0.8138135587737361,
+    "ece": 0.06746548220168715,
+    "brier": 0.2883516456802323,
+    "aurc": 0.08610423549383986
+  },
+  {
+    "configuration": "MC-Dropout (p=0.3, N=25)",
+    "dropout_p": 0.3,
+    "mc_passes": 25,
+    "temp_scaled": false,
+    "accuracy": 0.6906976744186046,
+    "macro_f1": 0.6881563621012872,
+    "ece": 0.11183786946673725,
+    "brier": 0.4393795111578583,
+    "aurc": 0.13275399623892462
+  },
+  {
+    "configuration": "MC-Dropout (p=0.5, N=25)",
+    "dropout_p": 0.5,
+    "mc_passes": 25,
+    "temp_scaled": false,
+    "accuracy": 0.34651162790697676,
+    "macro_f1": 0.3191322174676707,
+    "ece": 0.36905068155638004,
+    "brier": 0.9538606610439263,
+    "aurc": 0.4217960320865334
+  },
+  {
+    "configuration": "MC-Dropout (p=0.3, N=5)",
+    "dropout_p": 0.3,
+    "mc_passes": 5,
+    "temp_scaled": false,
+    "accuracy": 0.6930232558139535,
+    "macro_f1": 0.687714006293045,
+    "ece": 0.11983483856500579,
+    "brier": 0.44118799270054826,
+    "aurc": 0.13489404649569217
+  },
+  {
+    "configuration": "MC-Dropout (p=0.3, N=15)",
+    "dropout_p": 0.3,
+    "mc_passes": 15,
+    "temp_scaled": false,
+    "accuracy": 0.6953488372093023,
+    "macro_f1": 0.6918285793805908,
+    "ece": 0.1079710571571838,
+    "brier": 0.44174748034088135,
+    "aurc": 0.13366692731360635
+  },
+  {
+    "configuration": "MC-Dropout (p=0.3, N=30)",
+    "dropout_p": 0.3,
+    "mc_passes": 30,
+    "temp_scaled": false,
+    "accuracy": 0.6906976744186046,
+    "macro_f1": 0.6872764143486654,
+    "ece": 0.12018902665653894,
+    "brier": 0.4396540282328928,
+    "aurc": 0.13379747902398018
+  }
+]

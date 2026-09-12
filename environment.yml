@@ -1,0 +1,21 @@
+name: research
+channels:
+  - pytorch
+  - nvidia
+  - defaults
+  - conda-forge
+dependencies:
+  - python=3.11.15
+  - pytorch=2.11.0
+  - torchvision=0.26.0
+  - pytorch-cuda=12.8
+  - numpy>=2.0
+  - scipy>=1.14
+  - scikit-learn>=1.6
+  - matplotlib>=3.10
+  - pandas>=2.2
+  - pyyaml>=6.0
+  - tqdm>=4.66
+  - h5py>=3.11
+  - pip:
+      - captum>=0.9.0

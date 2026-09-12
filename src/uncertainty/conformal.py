@@ -45,9 +45,12 @@ class AdaptivePredictionSets:
         scores = np.array(scores)
         
         # Conformal quantile: ceil((N + 1) * (1 - alpha)) / N
-        level = np.clip(np.ceil((N + 1) * (1.0 - self.alpha)) / N, 0.0, 1.0)
-        self.q_hat = np.quantile(scores, level, method="higher")
-        print(f"APS Calibrated: alpha={self.alpha:.2f} (Target Coverage={(1-self.alpha)*100:.1f}%) | q_hat={self.q_hat:.4f}")
+        # Exactly following Angelopoulos & Bates (2021) "A Gentle Introduction to Conformal Prediction"
+        # k = ceil((N + 1) * (1 - alpha)), index in 0-indexed sorted scores is k - 1
+        k = int(np.ceil((N + 1) * (1.0 - self.alpha)))
+        k = min(max(k, 1), N) # guard against edge cases
+        self.q_hat = float(np.sort(scores)[k - 1])
+        print(f"APS Calibrated: n={N}, alpha={self.alpha:.2f} (Target Coverage={(1-self.alpha)*100:.1f}%) | k={k}/{N} -> q_hat={self.q_hat:.4f}")
         return self.q_hat
 
     def predict_sets(self, test_probs):
@@ -88,23 +91,33 @@ class AdaptivePredictionSets:
 
     def evaluate_coverage(self, test_probs, test_labels):
         """
-        Evaluates empirical coverage and average set size on test set.
+        Evaluates empirical coverage and average set size on test set,
+        including breakdown for correct and misclassified predictions.
         """
         prediction_sets = self.predict_sets(test_probs)
         N = len(test_labels)
         
         covered = [test_labels[i] in prediction_sets[i] for i in range(N)]
-        set_sizes = [len(s) for s in prediction_sets]
+        set_sizes = np.array([len(s) for s in prediction_sets])
+        
+        # Point predictions
+        point_preds = np.argmax(test_probs, axis=1)
+        is_correct = (point_preds == test_labels)
         
         empirical_coverage = np.mean(covered)
-        avg_set_size = np.mean(set_sizes)
-        singleton_prop = np.mean([s == 1 for s in set_sizes])
+        avg_set_size = float(np.mean(set_sizes))
+        singleton_prop = float(np.mean(set_sizes == 1))
+        
+        avg_set_size_correct = float(np.mean(set_sizes[is_correct])) if np.sum(is_correct) > 0 else 0.0
+        avg_set_size_misclass = float(np.mean(set_sizes[~is_correct])) if np.sum(~is_correct) > 0 else 0.0
         
         return {
             "target_coverage": float(1.0 - self.alpha),
             "empirical_coverage": float(empirical_coverage),
-            "avg_set_size": float(avg_set_size),
-            "singleton_proportion": float(singleton_prop),
-            "set_sizes": set_sizes,
+            "avg_set_size": avg_set_size,
+            "avg_set_size_correct": avg_set_size_correct,
+            "avg_set_size_misclass": avg_set_size_misclass,
+            "singleton_proportion": singleton_prop,
+            "set_sizes": set_sizes.tolist(),
             "prediction_sets": prediction_sets
         }

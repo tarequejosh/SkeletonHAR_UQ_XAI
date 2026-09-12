@@ -36,12 +36,10 @@ def run_selective_prediction_study(
     model.load_state_dict(ckpt["model_state_dict"], strict=False)
     
     # Datasets
-    train_dataset = UTDMHADDataset(config["data"]["data_dir"], os.path.join(config["data"]["data_dir"], "metadata.json"), split="train")
+    cal_dataset = UTDMHADDataset(config["data"]["data_dir"], os.path.join(config["data"]["data_dir"], "metadata.json"), split="cal_stratified")
     test_dataset = UTDMHADDataset(config["data"]["data_dir"], os.path.join(config["data"]["data_dir"], "metadata.json"), split="test")
     
-    # Calibration split (Subject 7)
-    cal_indices = [i for i, m in enumerate(train_dataset.meta) if m.get("subject") == 7]
-    cal_loader = DataLoader(torch.utils.data.Subset(train_dataset, cal_indices), batch_size=32, shuffle=False)
+    cal_loader = DataLoader(cal_dataset, batch_size=32, shuffle=False)
     test_loader = DataLoader(test_dataset, batch_size=32, shuffle=False)
     
     # --- 1. Fit Temperature Scaling on calibration split ---

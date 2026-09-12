@@ -49,7 +49,8 @@ def get_utd_loaders(
     data_dir="data/utd_mhad/processed", 
     batch_size=32, 
     num_workers=2, 
-    augment=True
+    augment=True,
+    train_split="train"
 ):
     """
     Returns (train_loader, test_loader) for UTD-MHAD cross-subject split.
@@ -64,7 +65,7 @@ def get_utd_loaders(
             RandomJitter(sigma=0.005, prob=0.5)
         ])
         
-    train_dataset = UTDMHADDataset(data_dir, meta_path, split="train", transform=train_transform)
+    train_dataset = UTDMHADDataset(data_dir, meta_path, split=train_split, transform=train_transform)
     test_dataset = UTDMHADDataset(data_dir, meta_path, split="test", transform=None)
     
     train_loader = DataLoader(

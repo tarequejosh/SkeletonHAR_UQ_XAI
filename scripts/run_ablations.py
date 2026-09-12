@@ -34,9 +34,8 @@ def run_ablations(
         augment=False
     )
     
-    train_dataset = UTDMHADDataset(config["data"]["data_dir"], os.path.join(config["data"]["data_dir"], "metadata.json"), split="train")
-    cal_indices = [i for i, m in enumerate(train_dataset.meta) if m.get("subject") == 7]
-    cal_loader = DataLoader(torch.utils.data.Subset(train_dataset, cal_indices), batch_size=32, shuffle=False)
+    cal_dataset = UTDMHADDataset(config["data"]["data_dir"], os.path.join(config["data"]["data_dir"], "metadata.json"), split="cal_stratified")
+    cal_loader = DataLoader(cal_dataset, batch_size=32, shuffle=False)
     
     # Base deterministic model
     base_model = STGCN(
